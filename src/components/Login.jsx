@@ -10,6 +10,7 @@ const Login = ({ isOpen, onClose }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
 
   if (!isOpen) return null;
 
@@ -20,6 +21,7 @@ const Login = ({ isOpen, onClose }) => {
       const idToken = await userCredential.user.getIdToken();
   
       const response = await loginWithGoogleBackend(idToken);
+      console.log("GOOGLE RESPONSE:", response); 
   
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
@@ -90,7 +92,7 @@ const Login = ({ isOpen, onClose }) => {
 
     try {
       const data = await loginUser(email, password);
-
+      console.log("LOGIN RESPONSE:", data); 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
