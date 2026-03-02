@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// baseURL backend kamu
 const API = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: import.meta.env.VITE_API_URL,
 });
 
 // 🔥 TEST CONNECT BACKEND
