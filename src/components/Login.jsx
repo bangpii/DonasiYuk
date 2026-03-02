@@ -1,8 +1,14 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/AutentivicatedUser";
 import { loginWithGoogle } from "../firebase/auth";
 
 const Login = ({ isOpen, onClose }) => {
   const cardRef = useRef(null);
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   if (!isOpen) return null;
 
@@ -71,40 +77,70 @@ const Login = ({ isOpen, onClose }) => {
           </p>
 
           {/* FORM EMAIL (BELUM DIPAKAI, FE ONLY) */}
-          <form className="space-y-5">
-            <input
-              type="email"
-              placeholder="Email"
-              className="
-                w-full px-4 py-3 rounded-lg
-                bg-white/20 border border-white/30
-                focus:ring-2 focus:ring-emerald-400
-                outline-none transition
-              "
-            />
+          <form
+  className="space-y-5"
+  onSubmit={async (e) => {
+    e.preventDefault();
 
-            <input
-              type="password"
-              placeholder="Password"
-              className="
-                w-full px-4 py-3 rounded-lg
-                bg-white/20 border border-white/30
-                focus:ring-2 focus:ring-emerald-400
-                outline-none transition
-              "
-            />
+    try {
+      const data = await loginUser(email, password);
 
-            <button
-              type="button"
-              className="
-                w-full py-3 rounded-lg
-                bg-emerald-500 hover:bg-emerald-600
-                transition font-semibold active:scale-95
-              "
-            >
-              Login
-            </button>
-          </form>
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      onClose();
+
+      if (data.user.role === "admin") {
+        navigate("/admin");
+      }
+
+    } catch (err) {
+      alert(err.message);
+    }
+  }}
+>
+
+  {/* 🔥 EMAIL */}
+  <input
+    type="email"
+    placeholder="Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    className="
+      w-full px-4 py-3 rounded-lg
+      bg-white/20 border border-white/30
+      focus:ring-2 focus:ring-emerald-400
+      outline-none transition
+    "
+  />
+
+  {/* 🔥 PASSWORD */}
+  <input
+    type="password"
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="
+      w-full px-4 py-3 rounded-lg
+      bg-white/20 border border-white/30
+      focus:ring-2 focus:ring-emerald-400
+      outline-none transition
+    "
+  />
+
+  {/* 🔥 BUTTON */}
+  <button
+    type="submit"
+    className="
+      w-full py-3 rounded-lg
+      bg-emerald-500 hover:bg-emerald-600
+      transition font-semibold active:scale-95
+    "
+  >
+    Login
+  </button>
+
+</form>
 
           <div className="my-6 text-center text-white/60 text-sm">
             ~~~~~ Yuk Donasi ~~~~~

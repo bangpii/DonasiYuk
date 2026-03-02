@@ -20,20 +20,25 @@ function App() {
     testBackendConnection();
   }, []);
 
+  const isAdmin = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return user && user.role === "admin";
+  };
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/user" replace />} />
       <Route path="/user" element={<User />} />
 
-      <Route path="/admin" element={<Admin />}>
-        <Route index element={<Dashboard />} />
-        <Route path="akun-admin" element={<AkunAdmin />} />
-        <Route path="akun-user" element={<AkunUser />} />
-        <Route path="donasi" element={<DonasiAdmin />} />
-        <Route path="laporan" element={<LaporanAdmin />} />
-        <Route path="program" element={<ProgramAdmin />} />
-        <Route path="gallery" element={<GalleryAdmin />} />
-      </Route>
+      <Route path="/admin" element={isAdmin() ? <Admin /> : <Navigate to="/user" />}>
+            <Route index element={<Dashboard />} />
+            <Route path="akun-admin" element={<AkunAdmin />} />
+            <Route path="akun-user" element={<AkunUser />} />
+            <Route path="donasi" element={<DonasiAdmin />} />
+            <Route path="laporan" element={<LaporanAdmin />} />
+            <Route path="program" element={<ProgramAdmin />} />
+            <Route path="gallery" element={<GalleryAdmin />} />
+          </Route>
     </Routes>
   );
 }
