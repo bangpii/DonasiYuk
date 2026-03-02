@@ -12,6 +12,7 @@ import DonasiAdmin from "./admin/DonasiAdmin";
 import ProgramAdmin from "./admin/ProgramAdmin";
 import GalleryAdmin from "./admin/GalleryAdmin";
 import LaporanAdmin from "./admin/LaporanAdmin";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 function App() {
 
@@ -20,18 +21,19 @@ function App() {
     testBackendConnection();
   }, []);
 
-  const isAdmin = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    console.log("CHECK ADMIN:", user);
-    return user && user.role === "admin";
-  };
-
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/user" replace />} />
       <Route path="/user" element={<User />} />
 
-      <Route path="/admin" element={isAdmin() ? <Admin /> : <Navigate to="/user" />}>
+      <Route
+  path="/admin"
+  element={
+    <ProtectedAdminRoute>
+      <Admin />
+    </ProtectedAdminRoute>
+  }
+>
             <Route index element={<Dashboard />} />
             <Route path="akun-admin" element={<AkunAdmin />} />
             <Route path="akun-user" element={<AkunUser />} />
