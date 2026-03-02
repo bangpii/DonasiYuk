@@ -22,6 +22,7 @@ function App() {
 
   const isAdmin = () => {
     const user = JSON.parse(localStorage.getItem("user"));
+    console.log("CHECK ADMIN:", user);
     return user && user.role === "admin";
   };
 
