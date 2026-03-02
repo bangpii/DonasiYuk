@@ -2,6 +2,7 @@ import { useState } from "react";
 import HeaderAdmin from "../components/HeaderAdmin";
 import NavigasiAdmin from "../components/NavigasiAdmin";
 import ContentAdmin from "../components/ContentAdmin";
+import { Outlet } from "react-router-dom";
 import "boxicons/css/boxicons.min.css";
 
 const Admin = () => {
@@ -23,7 +24,7 @@ const Admin = () => {
 
           {/* CONTENT IKUT TINGGI NAV */}
           <div className="flex-1 h-full">
-            <ContentAdmin />
+          <Outlet />
           </div>
 
           {/* HANDLE MOBILE */}
