@@ -29,7 +29,7 @@ const Login = ({ isOpen, onClose }) => {
       onClose();
   
       if (response.user.role === "admin") {
-        navigate("/admin");
+        navigate("/admin", { replace: true });
       }
   
     } catch {
@@ -99,7 +99,7 @@ const Login = ({ isOpen, onClose }) => {
       onClose();
 
       if (data.user.role === "admin") {
-        navigate("/admin");
+        navigate("/admin", { replace: true });
       }
 
     } catch (err) {
