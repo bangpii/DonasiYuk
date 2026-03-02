@@ -10,10 +10,14 @@ export const testBackendConnection = async () => {
         const response = await API.get("/");
 
         console.log("✅ Backend Connected:", response.data);
+        console.log("API URL:",
+            import.meta.env.VITE_API_URL);
 
         return response.data;
     } catch (error) {
         console.error("❌ Backend Connection Failed:", error.message);
+        console.log("API URL:",
+            import.meta.env.VITE_API_URL);
     }
 };
 
