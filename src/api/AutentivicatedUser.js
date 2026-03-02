@@ -19,3 +19,10 @@ export const loginUser = async (email, password) => {
         }
     }
 };
+
+export const loginWithGoogleBackend = async (idToken) => {
+    const response = await API.post("/login/google", {
+        idToken
+    });
+    return response.data;
+};

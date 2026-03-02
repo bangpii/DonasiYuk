@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState} from "react";
 import 'boxicons/css/boxicons.min.css'
 import useStickyNavbar from '../hooks/useStickyNavbar'
 import useScrollSpy from '../hooks/useScrollSpy'
@@ -25,9 +25,11 @@ const NavItem = ({ id, label, active }) => (
 );
 
 const Header = ({ onLogin, onDaftar }) => {
-  const isSticky = useStickyNavbar()
-  const active = useScrollSpy()
-  const [openMobile, setOpenMobile] = useState(false)
+  const isSticky = useStickyNavbar();
+  const active = useScrollSpy();
+  const [openMobile, setOpenMobile] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+  
 
   return (
     <>
@@ -62,20 +64,43 @@ const Header = ({ onLogin, onDaftar }) => {
 
           {/* RIGHT */}
           <div className="hidden md:flex gap-3">
-            <button
-              onClick={onLogin}
-              className="px-4 py-2 border border-[#2E7D32] text-[#2E7D32] rounded-lg hover:bg-[#2E7D32] hover:text-white transition"
-            >
-              Login
-            </button>
 
-            <button
-              onClick={onDaftar}
-              className="px-4 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-green-700 transition"
-            >
-              Daftar
-            </button>
-          </div>
+{user ? (
+  <>
+    <span className="px-4 py-2 text-[#2E7D32] font-semibold">
+      {user.email}
+    </span>
+
+    <button
+      onClick={() => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        window.location.reload();
+      }}
+      className="px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition"
+    >
+      Logout
+    </button>
+  </>
+) : (
+  <>
+    <button
+      onClick={onLogin}
+      className="px-4 py-2 border border-[#2E7D32] text-[#2E7D32] rounded-lg hover:bg-[#2E7D32] hover:text-white transition"
+    >
+      Login
+    </button>
+
+    <button
+      onClick={onDaftar}
+      className="px-4 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-green-700 transition"
+    >
+      Daftar
+    </button>
+  </>
+)}
+
+</div>
 
           {/* MOBILE BUTTON */}
           <button

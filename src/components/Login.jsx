@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/AutentivicatedUser";
 import { loginWithGoogle } from "../firebase/auth";
+import { loginWithGoogleBackend } from "../api/AutentivicatedUser";
 
 const Login = ({ isOpen, onClose }) => {
   const cardRef = useRef(null);
@@ -15,17 +16,22 @@ const Login = ({ isOpen, onClose }) => {
   // 🔑 HANDLE LOGIN GOOGLE (FE ONLY)
   const handleGoogleLogin = async () => {
     try {
-      const user = await loginWithGoogle();
-
-      // FE only (sementara)
-      localStorage.setItem("user", JSON.stringify(user));
-
-      console.log("Login Google sukses:", user);
-
-      onClose(); // tutup modal login
-    } catch (error) {
-      console.error("Login Google gagal:", error);
-      alert("Login Google dibatalkan atau gagal");
+      const userCredential = await loginWithGoogle();
+      const idToken = await userCredential.user.getIdToken();
+  
+      const response = await loginWithGoogleBackend(idToken);
+  
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+  
+      onClose();
+  
+      if (response.user.role === "admin") {
+        navigate("/admin");
+      }
+  
+    } catch {
+      alert("Login Google gagal");
     }
   };
 
