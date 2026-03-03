@@ -64,7 +64,7 @@ const Program = ({ onDonasi }) => {
                   {/* Image */}
                   <div className="relative">
                     <img
-                      src={item.image}
+                      src="bg_program.png"
                       alt={item.title}
                       className="w-full h-52 object-cover"
                     />
